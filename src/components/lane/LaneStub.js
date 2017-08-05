@@ -1,6 +1,6 @@
 import React from 'react';
 
-class LaneForm extends React.Component {
+class LaneStub extends React.Component {
     render() {
         return (
             <div className="lane lane--form"
@@ -11,4 +11,4 @@ class LaneForm extends React.Component {
     }
 }
 
-export default LaneForm;
+export default LaneStub;

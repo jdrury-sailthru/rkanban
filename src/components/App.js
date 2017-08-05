@@ -1,6 +1,6 @@
 import React from 'react';
-import Lane from './Lane';
-import LaneForm from './LaneForm';
+import Lane from './lane/Lane';
+import LaneStub from './lane/LaneStub';
 
 import '../css/App.css';
 
@@ -14,15 +14,17 @@ class App extends React.Component {
     this.addCardToLane = this.addCardToLane.bind(this);
     this.showCardForm = this.showCardForm.bind(this);
     this.hideCardForm = this.hideCardForm.bind(this);
+    this.updateCardPositions = this.updateCardPositions.bind(this);
+    this.placeCardInNearestLane = this.placeCardInNearestLane.bind(this);
 
     this.state = {
+      styles: {},
       lanes: {},
       laneOrder: []
     }
   }
 
   componentWillMount() {
-    this.localStorage
     this.loadSamples();
   }
 
@@ -44,18 +46,6 @@ class App extends React.Component {
     };
 
     this.setState({ lanes });
-  }
-
-  renderLane(key, i) {
-    const lane = this.state.lanes[key];
-    return <Lane 
-              key={lane.id}
-              id={lane.id}
-              details={lane} 
-              addCardToLane={this.addCardToLane} 
-              showCardForm={this.showCardForm} 
-              hideCardForm={this.hideCardForm} 
-              />
   }
 
   addCardToLane(id, card) {
@@ -94,6 +84,18 @@ class App extends React.Component {
     this.setState({ lanes });
   }
 
+  updateCardPositions(id, style) {
+    const styles = {...this.state.styles};
+    styles[id] = style;
+    this.setState({ styles });
+  }
+
+  placeCardInNearestLane(id) {
+    const styles = {...this.state.styles};
+    styles[id] = { position: 'static' };
+    this.setState({ styles });
+  }
+
   render() {
     return (
       <div className="App">
@@ -102,9 +104,24 @@ class App extends React.Component {
             .keys(this.state.lanes)
             .map(this.renderLane)
         }
-        <LaneForm createLane={this.createLane} />
+        <LaneStub createLane={this.createLane} />
       </div>
     );
+  }
+
+  renderLane(key, i) {
+    const lane = this.state.lanes[key];
+    return <Lane 
+              key={lane.id}
+              id={lane.id}
+              details={lane} 
+              styles={this.state.styles}
+              placeCardInNearestLane={this.placeCardInNearestLane}
+              updateCardPositions={this.updateCardPositions}
+              addCardToLane={this.addCardToLane} 
+              showCardForm={this.showCardForm} 
+              hideCardForm={this.hideCardForm} 
+              />
   }
 }
 

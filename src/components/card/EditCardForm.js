@@ -1,6 +1,6 @@
 import React from 'react';
 
-class CardForm extends React.Component {
+class EditCardForm extends React.Component {
     constructor() {
         super();
 
@@ -37,4 +37,4 @@ class CardForm extends React.Component {
     }
 }
 
-export default CardForm;
+export default EditCardForm;
